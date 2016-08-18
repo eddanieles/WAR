@@ -127,7 +127,12 @@ Game.prototype.battle = function(){
     );
     tieArray = [];
   } else {
-    this.tieFunction(firstPlayersCard, secondPlayersCard);
+    if (this.playerOne.hand.length === 0 || this.playerTwo.hand.length === 0) {
+      console.log(`Game ends in a draw!`);
+    } else {
+      this.tieFunction(firstPlayersCard, secondPlayersCard);
+    }
+
 
   }
   console.log(this.status());
