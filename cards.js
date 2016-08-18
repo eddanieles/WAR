@@ -86,12 +86,22 @@ Game.prototype.tieFunction = function(cardOne, cardTwo) {
 
   tieArray.push(cardOne);
   tieArray.push(cardTwo);
-  this.playerOne.hand.splice(0, 3).forEach(
-    (card) => tieArray.push(card)
-  );
-  this.playerTwo.hand.splice(0, 3).forEach(
-    (card) => tieArray.push(card)
-  );
+
+  if (this.playerOne.hand.length < 4 || this.playerTwo.hand.length < 4){
+    this.playerOne.hand.splice(0, this.playerOne.hand.length - 1).forEach(
+      (card) => tieArray.push(card)
+    );
+    this.playerTwo.hand.splice(0, this.playerTwo.hand.length - 1).forEach(
+      (card) => tieArray.push(card)
+    );
+  } else {
+    this.playerOne.hand.splice(0, 3).forEach(
+      (card) => tieArray.push(card)
+    );
+    this.playerTwo.hand.splice(0, 3).forEach(
+      (card) => tieArray.push(card)
+    );
+  }
 
   this.battle();
 }
