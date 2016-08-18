@@ -69,9 +69,6 @@ Player.prototype.take = function(cardOne, cardTwo){
   this.hand.push(cardOne);
   this.hand.push(cardTwo);
 }
-Player.prototype.tiePresent3Cards = function(){
-  return this.hand.splice(1, 3);
-}
 
 function Game(playerOne, playerTwo){
   var deck = new Deck;
@@ -86,52 +83,17 @@ var tieArray = [];
 
 Game.prototype.tieFunction = function(cardOne, cardTwo) {
   console.log("There is a tie!");
+
   tieArray.push(cardOne);
   tieArray.push(cardTwo);
+  this.playerOne.hand.splice(0, 3).forEach(
+    (card) => tieArray.push(card)
+  );
+  this.playerTwo.hand.splice(0, 3).forEach(
+    (card) => tieArray.push(card)
+  );
 
-  if (this.playerOne.hand.length === 1 || this.playerTwo.hand.length === 1){
-
-  } else if (this.playerOne.hand.length < 4 || this.playerTwo.hand.length < 4) {
-    this.playerOne.hand.splice(0, (this.playerOne.hand.length - 1)).forEach(
-      (card) => tieArray.push(card)
-    );
-    this.playerTwo.hand.splice(0, (this.playerTwo.hand.length - 1)).forEach(
-      (card) => tieArray.push(card)
-    );
-  } else {
-    this.playerOne.hand.splice(0, 3).forEach(
-      (card) => tieArray.push(card)
-    );
-    this.playerTwo.hand.splice(0, 3).forEach(
-      (card) => tieArray.push(card)
-    );
-  }
-
-    var firstPlayersCardTie = this.playerOne.presentCard();
-    console.log(firstPlayersCardTie);
-    var secondPlayersCardTie = this.playerTwo.presentCard();
-    console.log(secondPlayersCardTie);
-
-    if (firstPlayersCardTie.beats(secondPlayersCardTie)){
-      console.log(`${this.playerOne.name} wins the tie battle!`);
-      this.playerOne.take(firstPlayersCardTie, secondPlayersCardTie);
-      console.log(tieArray);
-      tieArray.forEach(
-        (card) => this.playerOne.hand.push(card)
-      );
-      tieArray = [];
-    } else if (secondPlayersCardTie.beats(firstPlayersCardTie)){
-      console.log(`${this.playerTwo.name} wins the tie battle!`);
-      this.playerTwo.take(firstPlayersCardTie, secondPlayersCardTie);
-      console.log(tieArray);
-      tieArray.forEach(
-        (card) => this.playerTwo.hand.push(card)
-      );
-      tieArray = [];
-    } else {
-      this.battle();
-    }
-
+  this.battle();
 }
 
 Game.prototype.battle = function(){
@@ -140,14 +102,20 @@ Game.prototype.battle = function(){
   var secondPlayersCard = this.playerTwo.presentCard();
   console.log(secondPlayersCard);
 
-
-
   if (firstPlayersCard.beats(secondPlayersCard)){
     console.log(`${this.playerOne.name} wins the battle!`);
     this.playerOne.take(firstPlayersCard, secondPlayersCard);
+    tieArray.forEach(
+      (card) => this.playerOne.hand.push(card)
+    );
+    tieArray = [];
   } else if (secondPlayersCard.beats(firstPlayersCard)){
     console.log(`${this.playerTwo.name} wins the battle!`);
     this.playerTwo.take(firstPlayersCard, secondPlayersCard);
+    tieArray.forEach(
+      (card) => this.playerOne.hand.push(card)
+    );
+    tieArray = [];
   } else {
     this.tieFunction(firstPlayersCard, secondPlayersCard);
 
@@ -173,7 +141,7 @@ Game.prototype.status = function(){
   ${this.playerTwo.name} has ${this.playerTwo.hand.length} cards`
 }
 
-var game = new Game("Kristy", "Ed");
+var game = new Game("Ruth", "Ed");
 while(!game.over){
   game.battle();
 }
