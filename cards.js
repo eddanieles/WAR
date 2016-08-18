@@ -113,7 +113,7 @@ Game.prototype.battle = function(){
     console.log(`${this.playerTwo.name} wins the battle!`);
     this.playerTwo.take(firstPlayersCard, secondPlayersCard);
     tieArray.forEach(
-      (card) => this.playerOne.hand.push(card)
+      (card) => this.playerTwo.hand.push(card)
     );
     tieArray = [];
   } else {
